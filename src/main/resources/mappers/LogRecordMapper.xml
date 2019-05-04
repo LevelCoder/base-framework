@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.LogRecordMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.LogRecordEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="log_module" property="logModule" jdbcType="VARCHAR" />
+        <id column="log_method" property="logMethod" jdbcType="VARCHAR" />
+        <id column="log_desc" property="logDesc" jdbcType="VARCHAR" />
+        <id column="log_ip" property="logIp" jdbcType="VARCHAR" />
+        <id column="log_params" property="logParams" jdbcType="VARCHAR" />
+        <id column="create_user" property="createUser" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+
+    <sql id="base_column_list">
+        id,log_module,log_method,log_desc,log_ip,log_params,create_user,create_time
+    </sql>
+
+
+    <!--
+     desc:   插入日志
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-01 22:00:00
+    -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.LogRecordEntity">
+        insert into aibiancheng_log_record
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                id,
+            </if>
+            <if test="logModule != null" >
+                log_module,
+            </if>
+            <if test="logMethod != null" >
+                log_method,
+            </if>
+            <if test="logDesc != null" >
+                log_desc,
+            </if>
+            <if test="logIp != null" >
+                log_ip,
+            </if>
+            <if test="logParams != null" >
+                log_params,
+            </if>
+            <if test="createUser != null" >
+                create_user,
+            </if>
+            <if test="createTime != null" >
+                create_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="logModule != null" >
+                #{logModule,jdbcType=VARCHAR},
+            </if>
+            <if test="logMethod != null" >
+                #{logMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="logDesc != null" >
+                #{logDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="logIp != null" >
+                #{logIp,jdbcType=VARCHAR},
+            </if>
+            <if test="logParams != null" >
+                #{logParams,jdbcType=VARCHAR},
+            </if>
+            <if test="createUser != null" >
+                #{createUser,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--
+      desc:   删除日志
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-10 22:00:00
+     -->
+    <delete id="deleteByLogId" parameterType="java.lang.Long">
+      delete form aibiancheng_log_record where id =  #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--
+      desc:   查看日志详情
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-10 22:00:00
+     -->
+    <select id="viewLogRecordDetail" parameterType="java.lang.Long" resultMap="BaseResultMap">
+
+    </select>
+
+</mapper>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.RoleEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="role_name" property="roleName" jdbcType="VARCHAR" />
+        <id column="role_desc" property="roleDesc" jdbcType="VARCHAR" />
+        <id column="role_state" property="roleState" jdbcType="TINYINT" />
+        <id column="create_user_id" property="createUserId" jdbcType="BIGINT" />
+        <id column="role_type" property="roleType" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,role_name,role_desc,role_state,create_user_id,role_type
+    </sql>
+
+    <!--
+       desc:   插入角色信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 10:52:00
+     -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.RoleEntity">
+        insert into aibiancheng_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleName != null">
+                role_name,
+            </if>
+            <if test="roleDesc != null">
+                role_desc,
+            </if>
+            <if test="roleState != null">
+                role_state,
+            </if>
+            <if test="createUserId != null">
+                create_user_id,
+            </if>
+            <if test="roleType != null">
+                role_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleDesc != null">
+                #{roleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="roleState != null">
+                #{roleState,jdbcType=TINYINT},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="roleType != null">
+                #{roleType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--
+      desc:   修改角色信息
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-02 10:52:00
+    -->
+    <update id="updateSelective" parameterType="com.aibiancheng.entity.RoleEntity">
+        update aibiancheng_role
+        <set >
+            <if test="roleName != null" >
+                role_name = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleDesc != null" >
+                role_desc = #{roleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="roleState != null" >
+                role_state = #{roleState,jdbcType=TINYINT},
+            </if>
+            <if test="createUserId != null" >
+                create_user_id = #{createUserId,jdbcType=BIGINT},
+            </if>
+            <if test="roleType != null" >
+                role_type = #{roleType,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where  id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--
+     desc:   根据roleId删除角色信息
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-02 10:52:00
+    -->
+    <delete id="deleteRoleById" parameterType="java.lang.Long">
+        delete from aibiancheng_role where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--
+       desc:   查询所有可用角色信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 11:10:00
+    -->
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_role
+        where role_state = '1'
+    </select>
+
+
+    <!--
+       desc:   根据角色id查询角色类型
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 11:45:00
+    -->
+    <select id="findRoleTypeByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
+        select role_type from aibiancheng_role where id = #{id,jdbcType=BIGINT}
+    </select>
+
+
+    <!--
+       desc:   修改角色状态 1.启用 2.禁用
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 13:00:00
+    -->
+    <update id="changeRoleState" parameterType="java.util.Map">
+        update aibiancheng_role set role_state = #{roleState,jdbcType=TINYINT} where id = #{roleId,jdbcType=BIGINT}
+    </update>
+
+    <!--
+     desc:   根据roleId查询角色信息
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-02 13:35:00
+    -->
+    <select id="findRoleByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_role
+        where id = #{userId,jdbcType=BIGINT}
+    </select>
+
+
+
+</mapper>

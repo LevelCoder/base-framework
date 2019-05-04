@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.UserTokenMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.UserTokenEntity" >
+        <id column="user_id" property="userId" jdbcType="BIGINT" />
+        <id column="token" property="token" jdbcType="VARCHAR" />
+        <id column="expire_time" property="expireTime" jdbcType="TIMESTAMP" />
+        <id column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="base_column_list">
+        user_id,token,expire_time,update_time
+    </sql>
+
+
+    <!--
+        desc:   根据token查询用户token信息
+        auther: LevelCoder
+        email:  LevelCoder@126.com
+        data:   2018-06-22 16:15:00
+    -->
+    <select id="findByToken" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_user_token
+        where token = #{token,jdbcType=VARCHAR}
+    </select>
+
+
+    <!--
+       desc:   插入token信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-06-22 16:43:00
+    -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.UserTokenEntity">
+        insert into aibiancheng_user_token
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                user_id,
+            </if>
+            <if test="token != null" >
+                token,
+            </if>
+            <if test="expireTime != null" >
+                expire_time,
+            </if>
+            <if test="updateTime != null" >
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="userId != null" >
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="token != null" >
+                #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="expireTime != null" >
+                #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--
+     desc:   根据用户id查询是否已经生成token信息
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-01 19:15:00
+    -->
+    <select id="findUserTokenByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_user_token
+        where user_id = #{userId,jdbcType=BIGINT}
+    </select>
+
+
+    <!--
+     desc:   更新token信息
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-01 19:15:00
+    -->
+    <update id="updateByEntity" parameterType="com.aibiancheng.entity.UserTokenEntity">
+        update aibiancheng_user_token
+        <set >
+            <if test="token != null" >
+                token = #{token,jdbcType=VARCHAR},
+            </if>
+            <if test="expireTime != null" >
+                expire_time = #{expireTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null" >
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where  user_id = #{userId,jdbcType=BIGINT}
+    </update>
+
+</mapper>

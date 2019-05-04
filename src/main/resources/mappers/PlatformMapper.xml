@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.PlatformMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.PlatformEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="platform_key" property="platformKey" jdbcType="VARCHAR" />
+        <id column="platform_secret" property="platformSecret" jdbcType="VARCHAR" />
+        <id column="platform_name" property="platformName" jdbcType="VARCHAR" />
+        <id column="platform_info" property="platformInfo" jdbcType="VARCHAR" />
+        <id column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+        <id column="update_time" property="updateTIme" jdbcType="TIMESTAMP" />
+        <id column="platform_state" property="platformState" jdbcType="TINYINT" />
+        <id column="platform_code" property="platformCode" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <sql id="base_column_list">
+        id,platform_key,platform_secret,platform_name,platform_info,create_time,update_time,platform_state,platform_code
+    </sql>
+
+    <!--
+        desc:   新增平台
+        auther: LevelCoder
+        email:  LevelCoder@126.com
+        data:   2018-07-02 11:10:00
+     -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.PlatformEntity">
+
+    </insert>
+
+
+
+</mapper>

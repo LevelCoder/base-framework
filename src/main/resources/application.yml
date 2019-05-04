@@ -1,0 +1,63 @@
+server:
+  port: 8761
+
+password:
+  default: 123456
+
+plugin:
+  sms:
+    url: http://web.duanxinwang.cc/asmx/smsservice.aspx?
+    name: dxwSHT
+    pwd: 0ECFFADE2A4AFF50B8604EC8D56B
+  email:
+    rsa_public_key:
+    rsa_private_key:
+
+spring:
+ application:
+    name: hd-wap-food
+ datasource:
+     type: com.alibaba.druid.pool.DruidDataSource
+     url: jdbc:mysql://39.106.29.54:3306/aibiancheng-base-auth?useUnicode=true&characterEncoding=utf-8
+     username: root
+     filters: stat
+     password: levelcoder
+     driver-class-name: com.mysql.jdbc.Driver
+     minIdle: 5
+     maxActive: 20
+     initialSize: 5
+     maxWait: 50000
+     validationQuery: SELECT 1 FROM DUAL
+     timeBetweenEvictionRunsMillis: 90000
+     minEvictableIdleTimeMillis: 300000
+     testWhileIdle: true
+     testOnBorrow: false
+     testOnReturn: false
+     poolPreparedStatements: true
+     maxPoolPreparedStatementPerConnectionSize: 20
+     cachePrepStmts: true
+ redis:
+      host: 127.0.0.1
+      port: 6379
+      timeout: 20000
+      pool:
+          max-active: 8
+          min-idle: 0
+          max-idle: 8
+          max-wait: -1
+
+http:
+  encoding.charset: UTF-8
+  encoding.enable: true
+  encoding.force: true
+
+mybatis:
+  mapperLocations: classpath*:mappers/*.xml
+  typeAliasesPackage: com.aibiancheng.entity
+  # 加载全局的配置文件
+  configLocation: classpath:mybatis-config.xml
+
+logging:
+  config: classpath:log4j2.xml
+  level:
+    com.aibiancheng: DEBUG

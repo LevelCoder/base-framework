@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.ElementMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.ElementEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="elemtnt_name" property="elementName" jdbcType="VARCHAR" />
+        <id column="element_code" property="elementCode" jdbcType="VARCHAR" />
+        <id column="element_url" property="elementUrl" jdbcType="VARCHAR" />
+        <id column="element_type" property="elementType" jdbcType="VARCHAR" />
+        <id column="element_method" property="elementMethod" jdbcType="VARCHAR" />
+        <id column="menu_id" property="menuId" jdbcType="BIGINT" />
+        <id column="element_desc" property="elementDesc" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+    <sql id="base_column_list">
+        id,elemtnt_name,element_code,element_url,element_type,element_method,menu_id,element_desc
+    </sql>
+
+
+    <!--
+       desc:   根据菜单id查询所有按钮列表
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 13:00:00
+    -->
+    <select id="findElementListByMenuId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_element
+        where menu_id = #{menuId,jdbcType=BIGINT}
+    </select>
+
+    <!--
+       desc:   插入元素
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-03 16:00:00
+    -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.ElementEntity">
+        insert into aibiancheng_element
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                id,
+            </if>
+            <if test="elementName != null">
+                elemtnt_name,
+            </if>
+            <if test="elementCode != null">
+                element_code,
+            </if>
+            <if test="elementUrl != null">
+                element_url,
+            </if>
+            <if test="elementType != null">
+                element_type,
+            </if>
+            <if test="elementMethod != null">
+                element_method,
+            </if>
+            <if test="menuId != null">
+                menu_id,
+            </if>
+            <if test="elementDesc != null">
+                element_desc,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="elementName != null">
+                #{elementName,jdbcType=VARCHAR},
+            </if>
+            <if test="elementCode != null">
+                #{elementCode,jdbcType=VARCHAR},
+            </if>
+            <if test="elementUrl != null">
+                #{elementUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="elementType != null">
+                #{elementType,jdbcType=VARCHAR},
+            </if>
+            <if test="elementMethod != null">
+                #{elementMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="menuId != null">
+                #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="elementDesc != null">
+                #{elementDesc,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--
+      desc:   修改元素
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-03 16:00:00
+    -->
+    <update id="updateSelective" parameterType="com.aibiancheng.entity.ElementEntity">
+        update aibiancheng_element
+        <set >
+            <if test="elementName != null">
+                elemtnt_name = #{elementName,jdbcType=VARCHAR},
+            </if>
+            <if test="elementCode != null">
+                element_code = #{elementCode,jdbcType=VARCHAR},
+            </if>
+            <if test="elementUrl != null">
+                element_url = #{elementUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="elementType != null">
+                element_type = #{elementType,jdbcType=VARCHAR},
+            </if>
+            <if test="elementMethod != null">
+                element_method = #{elementMethod,jdbcType=VARCHAR},
+            </if>
+            <if test="menuId != null">
+                menu_id = #{menuId,jdbcType=BIGINT},
+            </if>
+            <if test="elementDesc != null">
+                element_desc = #{elementDesc,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where  id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <!--
+      desc:   根据id删除元素
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-03 16:00:00
+    -->
+    <delete id="deleteElementById" parameterType="java.lang.Long">
+        delete from aibiancheng_element  where  id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <!--
+     desc:   根据id查看元素
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-18 12:23:00
+    -->
+    <select id="findElementInfoById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_element
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+</mapper>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.AuthResourceMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.AuthResourceEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="role_id" property="roleId" jdbcType="BIGINT" />
+        <id column="role_type" property="roleType" jdbcType="VARCHAR" />
+        <id column="resource_id" property="resourceId" jdbcType="BIGINT" />
+        <id column="resource_type" property="resourceType" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,role_id,role_type,resource_id,resource_type
+    </sql>
+
+
+    <!--
+       desc:   根据角色id,查询时所有资源信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-06-23 13:30:00
+    -->
+    <select id="findAuthResourceUrlByRoleId" parameterType="java.lang.Long" resultType="java.lang.String">
+        select am.menu_code from aibiancheng_auth_resource ar
+        left join aibiancheng_menu am on am.id = ar.resource_id
+        where ar.role_id = #{roleId,jdbcType=BIGINT} and ar.resource_type = 'menu'
+        union all
+        select ae.element_code from aibiancheng_auth_resource ar
+        left join aibiancheng_element ae on ae.id = ar.resource_id
+        where ar.role_id = #{roleId,jdbcType=BIGINT} and ar.resource_type = 'button'
+    </select>
+
+    <!--
+        desc:   根据roleId删除当前角色所拥有菜单信息
+        auther: LevelCoder
+        email:  LevelCoder@126.com
+        data:   2018-06-23 13:30:00
+    -->
+    <delete id="deleteRoleResourceMenuByRoleId" parameterType="java.lang.Long">
+        delete from aibiancheng_auth_resource where role_id = #{roleId,jdbcType=BIGINT} and resource_type = 'menu'
+    </delete>
+
+    <!--
+      desc:   根据roleId查询当前角色所拥有菜单列表
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-02 13:30:00
+    -->
+    <select id="findAuthResourceMenuListByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_auth_resource
+        where role_id = #{roleId,jdbcType=BIGINT} and resource_type = 'menu'
+    </select>
+
+    <!--
+     desc:   批量保存用户权限
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-02 17:30:00
+    -->
+    <insert id="saveBatchByEntity" parameterType="java.util.ArrayList">
+        insert into aibiancheng_auth_resource(
+        role_id,
+        role_type,
+        resource_id,
+        resource_type
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId},#{item.roleType},#{item.resourceId},#{item.resourceType})
+        </foreach>
+    </insert>
+
+    <!--
+       desc:   根据roleId查询当前角色所拥有元素列表
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 17:30:00
+      -->
+    <select id="findAuthResourceElementListByRoleId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_auth_resource
+        where role_id = #{roleId,jdbcType=BIGINT} and resource_type = 'button'
+    </select>
+
+    <!--
+       desc:   绑定角色元素信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 17:30:00
+      -->
+    <insert id="saveByEntity" parameterType="com.aibiancheng.entity.AuthResourceEntity">
+        insert into aibiancheng_auth_resource
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                id,
+            </if>
+            <if test="roleId != null">
+                role_id,
+            </if>
+            <if test="roleType != null">
+                role_type,
+            </if>
+            <if test="resourceId != null">
+                resource_id,
+            </if>
+            <if test="resourceType != null">
+                resource_type,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=BIGINT},
+            </if>
+            <if test="roleType != null">
+                #{roleType,jdbcType=VARCHAR},
+            </if>
+            <if test="resourceId != null">
+                #{resourceId,jdbcType=BIGINT},
+            </if>
+            <if test="resourceType != null">
+                #{resourceType,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--
+       desc:   移除元素
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 17:30:00
+      -->
+    <delete id="removeRoleResourceElement" parameterType="java.util.Map">
+        delete from aibiancheng_auth_resource where role_id = #{roleId,jdbcType=BIGINT} and resource_id = #{resourceId,jdbcType=BIGINT}
+    </delete>
+
+    <!--
+     desc:   根据资源id和资源类型查看是否已分配
+     auther: LevelCoder
+     email:  LevelCoder@126.com
+     data:   2018-07-02 17:30:00
+    -->
+    <select id="findAuthResourceByResource" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(1) from aibiancheng_auth_resource where resource_id = #{resourceId,jdbcType=BIGINT} and resource_type = #{resourceType,jdbcType=VARCHAR}
+    </select>
+
+</mapper>

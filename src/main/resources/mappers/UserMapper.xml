@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.aibiancheng.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.aibiancheng.entity.UserEntity" >
+        <id column="id" property="id" jdbcType="BIGINT" />
+        <id column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <id column="user_email" property="userEmail" jdbcType="VARCHAR" />
+        <id column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+        <id column="user_address" property="userAddress" jdbcType="VARCHAR" />
+        <id column="user_birth" property="userBirth" jdbcType="BIGINT" />
+        <id column="user_photo" property="userPhoto" jdbcType="VARCHAR" />
+        <id column="user_state" property="userState" jdbcType="TINYINT" />
+        <id column="user_type" property="userType" jdbcType="TINYINT" />
+        <id column="user_province_code" property="userProvinceCode" jdbcType="BIGINT" />
+        <id column="user_city_code" property="userCityCode" jdbcType="BIGINT" />
+        <id column="user_area_code" property="userAreaCode" jdbcType="BIGINT" />
+    </resultMap>
+
+    <sql id="base_column_list">
+        id,nick_name,user_email,user_phone,user_address,user_birth,user_photo,user_state,user_type,user_province_code,user_city_code,user_area_code
+    </sql>
+
+
+    <!--
+        desc:   根据用户id查询用户详情
+        auther: LevelCoder
+        email:  LevelCoder@126.com
+        data:   2018-06-22 10:52:00
+    -->
+    <select id="findUserInfoByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="base_column_list" />
+        from aibiancheng_user
+        where id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <!--
+        desc:   根据用户id查询用户状态
+        auther: LevelCoder
+        email:  LevelCoder@126.com
+        data:   2018-07-01 17:52:00
+    -->
+    <select id="findUserStateByUserId" parameterType="java.lang.Long" resultType="java.lang.Byte">
+        select user_state from aibiancheng_user where id = #{userId,jdbcType=BIGINT}
+    </select>
+
+    <!--
+      desc:   插入用户信息:返回用户自增id
+      auther: LevelCoder
+      email:  LevelCoder@126.com
+      data:   2018-07-02 00:52:00
+    -->
+    <insert id="insertByEntity" parameterType="com.aibiancheng.entity.UserEntity" useGeneratedKeys="true" keyProperty="id">
+        insert into aibiancheng_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                id,
+            </if>
+            <if test="nickName != null">
+                nick_name,
+            </if>
+            <if test="userPhone != null">
+                user_phone,
+            </if>
+            <if test="userAddress != null">
+                user_address,
+            </if>
+            <if test="userEmail != null">
+                user_email,
+            </if>
+            <if test="userBirth != null">
+                user_birth,
+            </if>
+            <if test="userPhoto != null">
+                user_photo,
+            </if>
+            <if test="userState != null">
+                user_state,
+            </if>
+            <if test="userType != null">
+                user_type,
+            </if>
+            <if test="userProvinceCode != null">
+                user_province_code,
+            </if>
+            <if test="userCityCode != null">
+                user_city_code,
+            </if>
+            <if test="userAreaCode != null">
+                user_area_code,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="nickName != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userAddress != null">
+                #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="userBirth != null">
+                #{userBirth,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhoto != null">
+                #{userPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                #{userState,jdbcType=TINYINT},
+            </if>
+            <if test="userType != null">
+                #{userType,jdbcType=TINYINT},
+            </if>
+            <if test="userProvinceCode != null">
+                #{userProvinceCode,jdbcType=BIGINT},
+            </if>
+            <if test="userCityCode != null">
+                #{userCityCode,jdbcType=BIGINT},
+            </if>
+            <if test="userAreaCode != null">
+                #{userAreaCode,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--
+       desc:   删除用户信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 11:52:00
+     -->
+    <delete id="deleteUserByUserId" parameterType="java.lang.Long">
+        delete from aibiancheng_user where id = #{userId,jdbcType=BIGINT}
+    </delete>
+
+
+    <!--
+       desc:   修改用户信息
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 17:52:00
+    -->
+    <update id="updateSelective" parameterType="com.aibiancheng.entity.UserEntity">
+        update aibiancheng_user
+        <set >
+            <if test="nickName != null">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="userAddress != null">
+                user_address = #{userAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="userBirth != null">
+                user_birth = #{userBirth,jdbcType=VARCHAR},
+            </if>
+            <if test="userPhoto != null">
+                user_photo = #{userPhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                user_state = #{userState,jdbcType=TINYINT},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType,jdbcType=TINYINT},
+            </if>
+            <if test="userProvinceCode != null">
+                user_province_code = #{userProvinceCode,jdbcType=BIGINT},
+            </if>
+            <if test="userCityCode != null">
+                user_city_code = #{userCityCode,jdbcType=BIGINT},
+            </if>
+            <if test="userAreaCode != null">
+                user_area_code = #{userAreaCode,jdbcType=BIGINT},
+            </if>
+        </set>
+        where  id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+
+    <!--
+       desc:   修改用户状态
+       auther: LevelCoder
+       email:  LevelCoder@126.com
+       data:   2018-07-02 17:52:00
+    -->
+    <update id="changeUserState" parameterType="java.util.Map">
+        update aibiancheng_user set user_state = #{userState,jdbcType=TINYINT} where id = #{userId,jdbcType=BIGINT}
+    </update>
+
+</mapper>
